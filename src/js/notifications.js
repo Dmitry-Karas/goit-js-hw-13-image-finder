@@ -25,14 +25,3 @@ export const errorMsg = () =>
     closer: false,
     stack: myStack,
   });
-
-export const noticeMsg = () => {
-  alert({
-    type: 'notice',
-    text: 'Loading...',
-    sticker: false,
-    // delay: 2000,
-    closer: false,
-    stack: myStack,
-  });
-};

@@ -6,9 +6,9 @@ const loadOpts = {
   threshold: 0,
 };
 
-export const loadObserver = new IntersectionObserver(onEntryLoad, loadOpts);
-export const styleObserver = new IntersectionObserver(onEntryStyle);
-export const back2topObserver = new IntersectionObserver(onEntryBack2top);
+export const loadObserver = new IntersectionObserver(onEntryLoad, loadOpts); // Для дозагрузки картинок
+export const styleObserver = new IntersectionObserver(onEntryStyle); // Для стилей
+export const back2topObserver = new IntersectionObserver(onEntryBack2top); // Для кнопки "Наверх"
 
 function onEntryBack2top(entries) {
   back2TopBtnRef.classList.add('show');

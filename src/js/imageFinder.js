@@ -34,19 +34,30 @@ function addPreviewSpinner(card) {
   const image = card.querySelector('IMG');
   const previewSpinner = new Spinner(previewSpinnerOpts);
 
+  // Добавляет спиннер, если картинка не загружена
   if (!image.dataset.loaded) {
     previewSpinner.spin(card);
   }
 
-  image.dataset.loaded = true;
-
   image.onload = () => {
-    previewSpinner.stop();
+    previewSpinner.stop(); // Останавливает спиннер после загрузки картинки
+    image.dataset.loaded = true; // Добавляет дата-аттрибут для идентификации загруженных картинок
   };
 }
 
+// Создает галлерею
+function makeGallery(images) {
+  const markup = imageCardTpl(images); // Создание разметки
+
+  renderGalleryMarkup(markup); // Рендер разметки
+
+  const cardRefs = getCardRefs(); // Получение ссылок на текущие элементы галлереи
+
+  observeCards(cardRefs.allCards, cardRefs.lastCard); // Добавление обзерверов и спиннера
+}
+
 // Коллбек для слушателя сабмита формы
-function onSearch(e) {
+async function onSearch(e) {
   e.preventDefault(); // Убирает перезагрузку страницы при сабмите
 
   API.query = e.currentTarget.elements.query.value; // Добавляет значение поля поиска
@@ -58,38 +69,31 @@ function onSearch(e) {
 
   API.resetPage(); // Сбрасывает значение страницы при новом поиске
 
-  API.getImages(API.searchQuery)
-    .then(images => {
-      const markup = imageCardTpl(images); // Создает разметку
+  const images = await API.getImages(API.searchQuery);
 
-      clearGallery(); // Очищает галлерею
-      renderGalleryMarkup(markup); // Рендерит новую галлерею
+  try {
+    clearGallery();
+    makeGallery(images);
 
-      const cardRefs = getCardRefs(); // Получает ссылки на текущие элементы галлереи
-
-      observeCards(cardRefs.allCards, cardRefs.lastCard); // Добавление обзервера и спиннера
-
-      setTimeout(() => {
-        window.scrollTo({ top: 240, behavior: 'smooth' });
-      }, 500);
-    })
-    .catch(errorMsg)
-    .finally(() => {
-      searchFormRef.reset(); // Сброс формы
-    });
+    setTimeout(() => {
+      window.scrollTo({ top: 240, behavior: 'smooth' });
+    }, 500);
+  } catch {
+    errorMsg();
+  } finally {
+    searchFormRef.reset(); // Сброс формы
+  }
 }
 
 // Догружает карточки галлереи
-export function onLoadMore() {
-  API.getImages(API.searchQuery).then(images => {
-    const markup = imageCardTpl(images);
+export async function onLoadMore() {
+  const images = await API.getImages(API.searchQuery);
 
-    renderGalleryMarkup(markup);
-
-    const cardRefs = getCardRefs();
-
-    observeCards(cardRefs.allCards, cardRefs.lastCard);
-  });
+  try {
+    makeGallery(images);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 searchFormRef.addEventListener('submit', onSearch);

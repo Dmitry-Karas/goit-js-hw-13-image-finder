@@ -13,10 +13,6 @@ export default class ApiService {
     const url = `/?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`;
     const { data } = await axios.get(url);
 
-    if (!data.total) {
-      throw new Error('error');
-    }
-
     this.nextPage();
 
     return data.hits;

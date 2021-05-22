@@ -4,4 +4,4 @@ import './js/back2top';
 import './js/lightbox';
 import smoothscroll from 'smoothscroll-polyfill';
 
-smoothscroll.polyfill();
+smoothscroll.polyfill(); // Полифилл для работы плавного скролла во всех браузерах
