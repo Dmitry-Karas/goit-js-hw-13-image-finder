@@ -1,5 +1,5 @@
 import ApiService from './apiService';
-import imageCardTpl from '../templates/imageCard.hbs';
+import imageCardTpl from '../../src/templates/ImageCard.hbs';
 import { Spinner } from 'spin.js';
 import { errorMsg } from './notifications';
 import { loadObserver, styleObserver } from './observer';
