@@ -27,6 +27,8 @@
     "sass": "^1.32.8"
   },
   "dependencies": {
+    "animate.css": "^3.7.2",
+    "animate.min.css": "^0.0.3",
     "axios": "^0.21.1",
     "basiclightbox": "^5.0.4",
     "lightbox": "^0.5.0",

@@ -77,7 +77,7 @@ async function onSearch(e) {
 
     setTimeout(() => {
       window.scrollTo({ top: 240, behavior: 'smooth' });
-    }, 500);
+    }, 600);
   } catch {
     errorMsg();
   } finally {
